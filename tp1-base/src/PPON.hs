@@ -9,7 +9,8 @@ data PPON
   deriving (Eq, Show)
 
 pponAtomico :: PPON -> Bool
-pponAtomico = error "PENDIENTE: Ejercicio 5"
+pponAtomico (ObjetoPP a) = False 
+pponAtomico _ = True 
 
 pponObjetoSimple :: PPON -> Bool
 pponObjetoSimple = error "PENDIENTE: Ejercicio 6"
