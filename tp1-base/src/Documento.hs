@@ -52,11 +52,12 @@ infixr 6 <+>
                       (\n rec -> if rec == Vacio then Linea n d2 else  Linea n rec)
                       d1 
  
+{- TODO: Se estan agregando las lineas en todas. Habria que exceptuar la primera -}
 indentar :: Int -> Doc -> Doc
-indentar i = error "PENDIENTE: Ejercicio 3"
+indentar i = foldDoc Vacio (\s rec -> Texto s rec) (\n rec -> Linea (n+i) rec) 
 
 mostrar :: Doc -> String
-mostrar = error "PENDIENTE: Ejercicio 4"
+mostrar = foldDoc "" (\s rec -> s ++ rec) (\n rec -> "\n" ++ take n (repeat ' ') ++ rec) 
 
 -- | Función dada que imprime un documento en pantalla
 
