@@ -13,10 +13,10 @@ pponAtomico (ObjetoPP a) = False
 pponAtomico _ = True 
 
 pponObjetoSimple :: PPON -> Bool
-pponObjetoSimple = error "PENDIENTE: Ejercicio 6"
+pponObjetoSimple (ObjetoPP xs) = foldr(\(x, y) rec -> pponAtomico y && rec) True xs
 
 intercalar :: Doc -> [Doc] -> Doc
-intercalar = error "PENDIENTE: Ejercicio 7"
+intercalar sep = foldr(\s rec -> if(rec == vacio) then s else s <+> sep <+> rec) vacio {-primer caso: rec = vacio-}
 
 entreLlaves :: [Doc] -> Doc
 entreLlaves [] = texto "{ }"
