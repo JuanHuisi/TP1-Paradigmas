@@ -43,15 +43,14 @@ foldDoc fVacio fTexto fLinea doc = case doc of
 infixr 6 <+>
 
 (<+>) :: Doc -> Doc -> Doc
-(<+>) d1 d2 = foldDoc Vacio 
-                (\s rec  -> if rec == Vacio then case d2 of 
-                                Vacio -> Texto s rec 
-                                Linea n doc -> Texto s d2 
-                                Texto s2 doc -> Texto (s ++ s2) doc
-                            else (Texto s rec) 
-                ) 
-                (\n rec -> if rec == Vacio then Linea n d2 else  Linea n rec)
-                d1 
+(<+>) d1 d2 = foldDoc d2
+                      (\s rec  -> case rec of 
+                                      Vacio -> Texto s rec 
+                                      Texto s2 doc -> Texto (s ++ s2) doc
+                                      Linea n doc -> Texto s rec 
+                      ) 
+                      (\n rec -> if rec == Vacio then Linea n d2 else  Linea n rec)
+                      d1 
  
 indentar :: Int -> Doc -> Doc
 indentar i = error "PENDIENTE: Ejercicio 3"
