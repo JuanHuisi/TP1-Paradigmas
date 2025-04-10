@@ -41,36 +41,35 @@ foldDoc fVacio fTexto fLinea doc =
 -- También permite que expresiones como `texto "a" <+> linea <+> texto "c"` sean válidas sin la necesidad de usar paréntesis.
 infixr 6 <+>
 
--- Como precondicion se asume que d1 y d2 respetan el invariante
+-- Como precondición se asume que d1 y d2 respetan el invariante
 (<+>) :: Doc -> Doc -> Doc
 (<+>) d1 d2 = foldDoc d2
   -- Si esta funcion se ejecuta es porque foldDoc atraveso un doc de tipo texto.
   (\s rec -> case rec of 
     Vacio -> Texto s rec 
-    -- Este es el unico caso que podria dar como resultado un Doc de tipo texto con
+    -- Este es el único caso que podria dar como resultado un Doc de tipo texto con
     -- una subestructura Doc tambien de tipo texto, que sucede solo cuando la
-    -- anteultima subestructura de d1 es de tipo texto y la primera tambien lo es.
-    -- En dicho caso, en vez de enganchar d2 al final de d1, lo que violaria el 
+    -- anteúltima subestructura de d1 es de tipo texto y la primera tambien lo es.
+    -- En dicho caso, en vez de concatenar d2 al final de d1, lo cual violaría el 
     -- invariante, se concatenan las strings en un mismo Doc de tipo texto, y se 
-    -- engancha la cola de d2, preservandose el invariante, obvio, solo si d1 y d2
-    -- lo respetaban.
+    -- concatena la cola de d2, preservandose el invariante. (⟺ d1 y d2 lo respetaban)
     Texto s2 doc -> Texto (s ++ s2) doc 
     Linea n doc -> Texto s rec 
   )
-  -- Si esta funcion se ejecuta es porque foldDoc atraveso un doc de tipo linea,
-  -- y es el unico caso que podria dar como resultado un Doc de tipo linea con
-  -- n < 0, pero como no se modifica el valor de n, di d1 y d2 preservan el
-  -- invariante, aqui tambien se preserva.
+  -- Si esta funcion se ejecuta es porque foldDoc atravesó un doc de tipo linea,
+  -- y es el único caso que podria dar como resultado un Doc de tipo linea con
+  -- n < 0, pero como no se modifica el valor de n, d1 y d2 preservan el
+  -- invariante, ⟹ aquí tambien se preserva.
   (\n rec -> if rec == Vacio then Linea n d2 else Linea n rec)
   d1
 
--- Mas alla de la justificacion, nuestros pensamientos sobre el ejercicio 3 se
+-- Mas allá de la justificación, nuestros pensamientos sobre el ejercicio 3 se
 -- encuentran en el archivo readme.txt
 
--- Como precondicion se asume que i > 0 y que el Doc pasado cumple el invariante,
--- luego, primera funcion no modifica el Doc de tipo texto, asi que se preserva
--- el invariante, y la segunda funcion solo le suma un numero positivo al Doc de
--- tipo linea, por lo que tambien se preserva el invariante.
+-- Como precondición se asume que i > 0 y que el Doc pasado cumple el invariante,
+-- luego, primera función no modifica el Doc de tipo texto, así que se preserva
+-- el invariante, y la segunda función solo le suma un numero positivo al Doc de
+-- tipo linea, por lo que también se preserva el invariante.
 indentar :: Int -> Doc -> Doc 
 indentar i = foldDoc (Vacio) (\s res -> Texto s res) (\n res -> Linea (n + i) res)
 
