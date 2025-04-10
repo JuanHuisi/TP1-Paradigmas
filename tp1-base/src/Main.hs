@@ -47,7 +47,6 @@ testsEj3 =
       indentar 0 (linea <+> texto "a") ~?= linea <+> texto "a" -- test trivial
       
     ]
-{- Para ver sobre casos de test del ej3, especificamente como se handlean las lineas leer la sección comentada en indentar' dentro de Documentar.hs-}
 
 testsEj4 :: Test
 testsEj4 =
