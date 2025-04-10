@@ -112,10 +112,9 @@ Se puede ejecutar indentar' en winGHCi y correrlo con estos casos de test para v
   (este debería funcionar en ambos indentar e indentar', pues arranca en texto)
 
   indentar' 2 (Linea 1 (Linea 3 (texto "a"))) == Linea 1 (Linea 5 (texto "a")) para check de sumas correctas
-  (indentar normal devolvería Linea 3 (...))
+  (indentar normal devolvería Linea 3 (Linea 5 (texto "a"))
 
-  Conclusión -> La diferencia entre indentar e indentar' (que fue lo que pensamos que se pedía) difiere en el caso que el Documento a indentar inicie
-                una lista.
+Obs (ii) -> La diferencia entre indentar e indentar' (que fue lo que pensamos que se pedía) difiere en el caso que el Documento a indentar inicie en una linea.
   
 -}
 mostrar :: Doc -> String
