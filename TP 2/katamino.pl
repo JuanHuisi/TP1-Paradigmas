@@ -35,29 +35,29 @@ coordenadas(T, (I, J)) :-
     between(1, C, J).
 
 % EJ 5
-partes([], []).
-partes([X|Xs], [X|Ys]) :- partes(Xs, Ys).
-partes([_|Xs], Ys) :- partes(Xs, Ys).
-
+% kPiezas(+K, -PS)
 kPiezas(K, PS) :-
     nombrePiezas(L),
     partes(L, PS),
     length(PS, K).
 
+partes([], []).
+partes([X|Xs], [X|Ys]) :- partes(Xs, Ys).
+partes([_|Xs], Ys) :- partes(Xs, Ys).
+
 % EJ 6
-
-armarSeccion(Rs, _, _, []) :- is_list(Rs).
-armarSeccion([R|Rs], ANCHO, J, [ST|STs]) :-
-    Descartar is J - 1,
-    sublista(Descartar, ANCHO, R, ST),
-    armarSeccion(Rs, ANCHO, J, STs).
-
 % seccionTablero(+T, +ALTO, +ANCHO, +IJ, ?ST)
 seccionTablero(T, ALTO, ANCHO, (I, J), ST) :-
     Descartar is I - 1,
     sublista(Descartar, ALTO, T, R),
     armarSeccion(R, ANCHO, J, ST),
     length(ST, ALTO).
+
+armarSeccion(Rs, _, _, []) :- is_list(Rs).
+armarSeccion([R|Rs], ANCHO, J, [ST|STs]) :-
+    Descartar is J - 1,
+    sublista(Descartar, ANCHO, R, ST),
+    armarSeccion(Rs, ANCHO, J, STs).
 
 % EJ 7
 % ubicarPieza(+Tablero, +Identificador)
@@ -69,8 +69,6 @@ ubicarPieza(Tablero, Identificador) :-
 
 % EJ 8
 % ubicarPiezas(+Tablero, +Poda, +Identificadores)¨
-poda(sinPoda, _).
-
 ubicarPiezas(_, _, []).
 ubicarPiezas(Tablero, Poda, [I|Is]) :-
     ubicarPieza(Tablero, I),
@@ -90,3 +88,17 @@ cantSoluciones(Poda, Columnas, N) :-
     length(TS, N).
 
 % EJ 11
+poda(sinPoda, _).
+poda(podaMod5, T) :- todosGruposLibresModulo5(T).
+
+todosGruposLibresModulo5(T) :-
+    coordenadasLibres(T, L),
+    agrupar(L, G),
+    forall(member(X, G), (length(X, N), 0 =:= N mod 5)).
+
+coordenadasLibres(T, L) :- findall(IJ, (coordenadas(T, IJ), esLibre(IJ, T)), L).
+
+esLibre((I, J), T) :-
+    nth1(I, T, R),
+    nth1(J, R, X),
+    var(X).
